@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-feature-settings: 'cv11', 'ss01';
+    font-variation-settings: 'opsz' 32;
+  }
+}
+
+@layer components {
+  .auth-input-field {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors;
+  }
+
+  .auth-button {
+    @apply w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium;
+  }
+
+  .text-primary {
+    @apply text-blue-600;
+  }
+
+  .text-primary-hover {
+    @apply text-blue-700;
+  }
+
+  .text-secondary {
+    @apply text-gray-600;
+  }
+
+  .gap-form-field {
+    @apply gap-4;
+  }
+
+  /* Markdown content styling */
+  .markdown-content {
+    @apply text-base leading-relaxed;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  }
+
+  .markdown-content h1,
+  .markdown-content h2,
+  .markdown-content h3,
+  .markdown-content h4,
+  .markdown-content h5,
+  .markdown-content h6 {
+    @apply font-semibold;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-feature-settings: 'cv11', 'ss01';
+    font-variation-settings: 'opsz' 32;
+  }
+
+  .markdown-content code {
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+    font-feature-settings: 'liga' 0;
+  }
+
+  .markdown-content pre {
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+    font-feature-settings: 'liga' 0;
+  }
+
+  /* Syntax highlighting styles */
+  .markdown-content .hljs {
+    @apply bg-gray-900 text-gray-100;
+  }
+
+  .markdown-content .hljs-comment,
+  .markdown-content .hljs-quote {
+    @apply text-gray-500 italic;
+  }
+
+  .markdown-content .hljs-keyword,
+  .markdown-content .hljs-selector-tag,
+  .markdown-content .hljs-subst {
+    @apply text-purple-400;
+  }
+
+  .markdown-content .hljs-number,
+  .markdown-content .hljs-literal,
+  .markdown-content .hljs-variable,
+  .markdown-content .hljs-template-variable,
+  .markdown-content .hljs-tag .hljs-attr {
+    @apply text-orange-400;
+  }
+
+  .markdown-content .hljs-string,
+  .markdown-content .hljs-doctag {
+    @apply text-green-400;
+  }
+
+  .markdown-content .hljs-title,
+  .markdown-content .hljs-section,
+  .markdown-content .hljs-selector-id {
+    @apply text-blue-400;
+  }
+
+  .markdown-content .hljs-type,
+  .markdown-content .hljs-class .hljs-title {
+    @apply text-yellow-400;
+  }
+
+  .markdown-content .hljs-tag,
+  .markdown-content .hljs-name,
+  .markdown-content .hljs-attribute {
+    @apply text-red-400;
+  }
+
+  .markdown-content .hljs-regexp,
+  .markdown-content .hljs-link {
+    @apply text-cyan-400;
+  }
+
+  .markdown-content .hljs-symbol,
+  .markdown-content .hljs-bullet {
+    @apply text-pink-400;
+  }
+
+  .markdown-content .hljs-built_in,
+  .markdown-content .hljs-builtin-name {
+    @apply text-indigo-400;
+  }
+
+  .markdown-content .hljs-meta {
+    @apply text-gray-400;
+  }
+
+  .markdown-content .hljs-deletion {
+    @apply bg-red-900 text-red-200;
+  }
+
+  .markdown-content .hljs-addition {
+    @apply bg-green-900 text-green-200;
+  }
+
+  .markdown-content .hljs-emphasis {
+    @apply italic;
+  }
+
+  .markdown-content .hljs-strong {
+    @apply font-bold;
+  }
+
+  /* Responsive typography */
+  @media (max-width: 640px) {
+    .markdown-content {
+      @apply text-sm;
+    }
+    
+    .markdown-content h1 {
+      @apply text-2xl;
+    }
+    
+    .markdown-content h2 {
+      @apply text-xl;
+    }
+    
+    .markdown-content h3 {
+      @apply text-lg;
+    }
+    
+    .markdown-content pre {
+      @apply text-xs;
+    }
+  }
+
+  /* Focus styles for accessibility */
+  .markdown-content a:focus {
+    @apply outline-none ring-2 ring-blue-500 ring-offset-2 rounded;
+  }
+
+  /* Print styles */
+  @media print {
+    .markdown-content {
+      @apply text-black;
+    }
+    
+    .markdown-content a {
+      @apply text-black underline;
+    }
+    
+    .markdown-content pre {
+      @apply bg-gray-100 text-black border border-gray-300;
+    }
+  }
+}
