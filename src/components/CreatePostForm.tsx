@@ -41,15 +41,15 @@ export function CreatePostForm() {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+    <div className="bg-white dark:bg-card-dark rounded-lg shadow-sm border border-gray-200 dark:border-card-border-dark p-8">
       <div className="mb-8">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">Create New Post</h2>
-        <p className="text-gray-600">Share your knowledge with the community</p>
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Create New Post</h2>
+        <p className="text-gray-600 dark:text-gray-400">Share your knowledge with the community</p>
       </div>
       
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Title *
           </label>
           <input
@@ -58,13 +58,13 @@ export function CreatePostForm() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Enter an engaging post title..."
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors text-lg"
+            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 outline-none transition-colors text-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             required
           />
         </div>
 
         <div>
-          <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="tags" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Tags
           </label>
           <input
@@ -73,15 +73,15 @@ export function CreatePostForm() {
             value={tags}
             onChange={(e) => setTags(e.target.value)}
             placeholder="react, javascript, tutorial, web-development..."
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 outline-none transition-colors bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
           />
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Separate tags with commas. Use lowercase and hyphens for multi-word tags.
           </p>
         </div>
 
         <div>
-          <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="content" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Content *
           </label>
           <textarea
@@ -108,15 +108,15 @@ Code block
 ```
 
 [Link text](https://example.com)"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none font-mono text-sm leading-relaxed"
+            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 outline-none resize-none font-mono text-sm leading-relaxed bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             required
           />
-          <p className="mt-2 text-sm text-gray-500">
+          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
             Write in plain text or use basic markdown formatting. The content will be displayed as formatted text.
           </p>
         </div>
 
-        <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+        <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200 dark:border-gray-700">
           <button
             type="button"
             onClick={() => {
@@ -124,14 +124,14 @@ Code block
               setContent("");
               setTags("");
             }}
-            className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+            className="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium bg-white dark:bg-gray-800"
           >
             Clear Form
           </button>
           <button
             type="submit"
             disabled={isSubmitting || !title.trim() || !content.trim()}
-            className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium shadow-sm hover:shadow-md"
+            className="px-8 py-3 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium shadow-sm hover:shadow-md"
           >
             {isSubmitting ? (
               <span className="flex items-center space-x-2">

@@ -5,35 +5,39 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border dark:border-border-dark;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background dark:bg-background-dark text-foreground dark:text-foreground-dark transition-colors duration-200;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     font-feature-settings: 'cv11', 'ss01';
     font-variation-settings: 'opsz' 32;
+  }
+  
+  html {
+    @apply transition-colors duration-200;
   }
 }
 
 @layer components {
   .auth-input-field {
-    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors;
+    @apply w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 outline-none transition-colors bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100;
   }
 
   .auth-button {
-    @apply w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium;
+    @apply w-full bg-blue-600 dark:bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium;
   }
 
   .text-primary {
-    @apply text-blue-600;
+    @apply text-blue-600 dark:text-blue-400;
   }
 
   .text-primary-hover {
-    @apply text-blue-700;
+    @apply text-blue-700 dark:text-blue-300;
   }
 
   .text-secondary {
-    @apply text-gray-600;
+    @apply text-gray-600 dark:text-gray-400;
   }
 
   .gap-form-field {
@@ -42,7 +46,7 @@
 
   /* Markdown content styling */
   .markdown-content {
-    @apply text-base leading-relaxed;
+    @apply text-base leading-relaxed text-gray-700 dark:text-gray-300;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   }
 
@@ -52,7 +56,7 @@
   .markdown-content h4,
   .markdown-content h5,
   .markdown-content h6 {
-    @apply font-semibold;
+    @apply font-semibold text-gray-900 dark:text-gray-100;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     font-feature-settings: 'cv11', 'ss01';
     font-variation-settings: 'opsz' 32;
@@ -70,18 +74,18 @@
 
   /* Syntax highlighting styles */
   .markdown-content .hljs {
-    @apply bg-gray-900 text-gray-100;
+    @apply bg-gray-900 dark:bg-gray-950 text-gray-100 dark:text-gray-200;
   }
 
   .markdown-content .hljs-comment,
   .markdown-content .hljs-quote {
-    @apply text-gray-500 italic;
+    @apply text-gray-500 dark:text-gray-400 italic;
   }
 
   .markdown-content .hljs-keyword,
   .markdown-content .hljs-selector-tag,
   .markdown-content .hljs-subst {
-    @apply text-purple-400;
+    @apply text-purple-400 dark:text-purple-300;
   }
 
   .markdown-content .hljs-number,
@@ -89,56 +93,56 @@
   .markdown-content .hljs-variable,
   .markdown-content .hljs-template-variable,
   .markdown-content .hljs-tag .hljs-attr {
-    @apply text-orange-400;
+    @apply text-orange-400 dark:text-orange-300;
   }
 
   .markdown-content .hljs-string,
   .markdown-content .hljs-doctag {
-    @apply text-green-400;
+    @apply text-green-400 dark:text-green-300;
   }
 
   .markdown-content .hljs-title,
   .markdown-content .hljs-section,
   .markdown-content .hljs-selector-id {
-    @apply text-blue-400;
+    @apply text-blue-400 dark:text-blue-300;
   }
 
   .markdown-content .hljs-type,
   .markdown-content .hljs-class .hljs-title {
-    @apply text-yellow-400;
+    @apply text-yellow-400 dark:text-yellow-300;
   }
 
   .markdown-content .hljs-tag,
   .markdown-content .hljs-name,
   .markdown-content .hljs-attribute {
-    @apply text-red-400;
+    @apply text-red-400 dark:text-red-300;
   }
 
   .markdown-content .hljs-regexp,
   .markdown-content .hljs-link {
-    @apply text-cyan-400;
+    @apply text-cyan-400 dark:text-cyan-300;
   }
 
   .markdown-content .hljs-symbol,
   .markdown-content .hljs-bullet {
-    @apply text-pink-400;
+    @apply text-pink-400 dark:text-pink-300;
   }
 
   .markdown-content .hljs-built_in,
   .markdown-content .hljs-builtin-name {
-    @apply text-indigo-400;
+    @apply text-indigo-400 dark:text-indigo-300;
   }
 
   .markdown-content .hljs-meta {
-    @apply text-gray-400;
+    @apply text-gray-400 dark:text-gray-500;
   }
 
   .markdown-content .hljs-deletion {
-    @apply bg-red-900 text-red-200;
+    @apply bg-red-900 dark:bg-red-800 text-red-200 dark:text-red-100;
   }
 
   .markdown-content .hljs-addition {
-    @apply bg-green-900 text-green-200;
+    @apply bg-green-900 dark:bg-green-800 text-green-200 dark:text-green-100;
   }
 
   .markdown-content .hljs-emphasis {
@@ -174,7 +178,7 @@
 
   /* Focus styles for accessibility */
   .markdown-content a:focus {
-    @apply outline-none ring-2 ring-blue-500 ring-offset-2 rounded;
+    @apply outline-none ring-2 ring-blue-500 dark:ring-blue-400 ring-offset-2 dark:ring-offset-gray-900 rounded;
   }
 
   /* Print styles */

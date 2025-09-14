@@ -6,6 +6,7 @@ import { BlogLayout } from "./components/BlogLayout";
 import { CreatePostForm } from "./components/CreatePostForm";
 import { SignInModal } from "./components/SignInModal";
 import { AboutPage } from "./components/AboutPage";
+import { DarkModeToggle } from "./components/DarkModeToggle";
 import { useState, useEffect } from "react";
 
 export default function App() {
@@ -22,14 +23,14 @@ export default function App() {
   }, [user, ensureUserProfile]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-sm border-b sticky top-0 z-40">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+      <nav className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40 transition-colors duration-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-8">
               <button 
                 onClick={() => setCurrentPage("blog")}
-                className="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors"
+                className="text-2xl font-bold text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               >
                 Ashtacore
               </button>
@@ -38,8 +39,8 @@ export default function App() {
                   onClick={() => setCurrentPage("blog")}
                   className={`px-3 py-2 text-sm font-medium transition-colors ${
                     currentPage === "blog"
-                      ? "text-blue-600 border-b-2 border-blue-600"
-                      : "text-gray-600 hover:text-gray-900"
+                      ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400"
+                      : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
                   }`}
                 >
                   Blog
@@ -48,8 +49,8 @@ export default function App() {
                   onClick={() => setCurrentPage("about")}
                   className={`px-3 py-2 text-sm font-medium transition-colors ${
                     currentPage === "about"
-                      ? "text-blue-600 border-b-2 border-blue-600"
-                      : "text-gray-600 hover:text-gray-900"
+                      ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400"
+                      : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
                   }`}
                 >
                   Meet Jay
@@ -59,8 +60,8 @@ export default function App() {
                     onClick={() => setCurrentPage("create")}
                     className={`px-3 py-2 text-sm font-medium transition-colors ${
                       currentPage === "create"
-                        ? "text-blue-600 border-b-2 border-blue-600"
-                        : "text-gray-600 hover:text-gray-900"
+                        ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400"
+                        : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
                     }`}
                   >
                     Create Post
@@ -70,9 +71,10 @@ export default function App() {
             </div>
             
             <div className="flex items-center space-x-4">
+              <DarkModeToggle />
               <Authenticated>
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-blue-600 dark:bg-blue-500 rounded-full flex items-center justify-center">
                     <span className="text-white text-sm font-medium">
                       {(user?.profile?.displayName || user?.name || "U").charAt(0).toUpperCase()}
                     </span>
@@ -83,7 +85,7 @@ export default function App() {
               <Unauthenticated>
                 <button
                   onClick={() => setIsSignInModalOpen(true)}
-                  className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm hover:shadow-md"
+                  className="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors shadow-sm hover:shadow-md"
                 >
                   <svg
                     className="w-4 h-4 mr-2"
@@ -112,18 +114,18 @@ export default function App() {
         {currentPage === "create" && user?.profile?.role === "admin" && <CreatePostPage />}
       </main>
       
-      <footer className="bg-white border-t border-gray-200 mt-16">
+      <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-16 transition-colors duration-200">
         <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="text-center text-gray-600">
+          <div className="text-center text-gray-600 dark:text-gray-400">
             <p>&copy; 2025 Joshua Jay Runyan. Built with Convex and React.</p>
-						<div className="flex justify-center gap-6">
-	            <a href="mailto:runyan@ashtacore.com" className="hover:text-blue-400 transition-colors">
+						<div className="flex justify-center gap-6 mt-4">
+	            <a href="mailto:runyan@ashtacore.com" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
 	              Email
 	            </a>
-	            <a href="https://www.linkedin.com/in/joshua-jay-runyan/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">
+	            <a href="https://www.linkedin.com/in/joshua-jay-runyan/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
 	              LinkedIn
 	            </a>
-	            <a href="https://github.com/ashtacore" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">
+	            <a href="https://github.com/ashtacore" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
 	              GitHub
 	            </a>
 	          </div>

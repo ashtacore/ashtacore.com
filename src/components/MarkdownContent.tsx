@@ -10,46 +10,46 @@ interface MarkdownContentProps {
 
 export function MarkdownContent({ content, className = "" }: MarkdownContentProps) {
   return (
-    <div className={`prose prose-gray max-w-none ${className}`}>
+    <div className={`prose prose-gray dark:prose-invert max-w-none ${className}`}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeHighlight, rehypeRaw]}
         components={{
           // Headings
           h1: ({ children }) => (
-            <h1 className="text-3xl font-bold text-gray-900 mb-6 mt-8 first:mt-0 leading-tight">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 mt-8 first:mt-0 leading-tight">
               {children}
             </h1>
           ),
           h2: ({ children }) => (
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4 mt-8 first:mt-0 leading-tight border-b border-gray-200 pb-2">
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4 mt-8 first:mt-0 leading-tight border-b border-gray-200 dark:border-gray-700 pb-2">
               {children}
             </h2>
           ),
           h3: ({ children }) => (
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-6 first:mt-0 leading-tight">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 mt-6 first:mt-0 leading-tight">
               {children}
             </h3>
           ),
           h4: ({ children }) => (
-            <h4 className="text-lg font-medium text-gray-900 mb-2 mt-5 first:mt-0 leading-tight">
+            <h4 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2 mt-5 first:mt-0 leading-tight">
               {children}
             </h4>
           ),
           h5: ({ children }) => (
-            <h5 className="text-base font-medium text-gray-900 mb-2 mt-4 first:mt-0 leading-tight">
+            <h5 className="text-base font-medium text-gray-900 dark:text-gray-100 mb-2 mt-4 first:mt-0 leading-tight">
               {children}
             </h5>
           ),
           h6: ({ children }) => (
-            <h6 className="text-sm font-medium text-gray-700 mb-2 mt-4 first:mt-0 leading-tight uppercase tracking-wide">
+            <h6 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 mt-4 first:mt-0 leading-tight uppercase tracking-wide">
               {children}
             </h6>
           ),
           
           // Paragraphs
           p: ({ children }) => (
-            <p className="text-gray-700 leading-relaxed mb-4 last:mb-0">
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4 last:mb-0">
               {children}
             </p>
           ),
@@ -60,7 +60,7 @@ export function MarkdownContent({ content, className = "" }: MarkdownContentProp
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-800 underline decoration-blue-300 hover:decoration-blue-500 transition-colors font-medium"
+              className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline decoration-blue-300 dark:decoration-blue-500 hover:decoration-blue-500 dark:hover:decoration-blue-400 transition-colors font-medium"
             >
               {children}
             </a>
@@ -68,12 +68,12 @@ export function MarkdownContent({ content, className = "" }: MarkdownContentProp
           
           // Lists
           ul: ({ children }) => (
-            <ul className="list-disc list-inside mb-4 space-y-2 text-gray-700">
+            <ul className="list-disc list-inside mb-4 space-y-2 text-gray-700 dark:text-gray-300">
               {children}
             </ul>
           ),
           ol: ({ children }) => (
-            <ol className="list-decimal list-inside mb-4 space-y-2 text-gray-700">
+            <ol className="list-decimal list-inside mb-4 space-y-2 text-gray-700 dark:text-gray-300">
               {children}
             </ol>
           ),
@@ -88,7 +88,7 @@ export function MarkdownContent({ content, className = "" }: MarkdownContentProp
             const inline = !className?.includes('language-');
             if (inline) {
               return (
-                <code className="bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm font-mono border">
+                <code className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-2 py-1 rounded text-sm font-mono border border-gray-200 dark:border-gray-700">
                   {children}
                 </code>
               );
@@ -99,11 +99,11 @@ export function MarkdownContent({ content, className = "" }: MarkdownContentProp
             return (
               <div className="relative mb-4">
                 {language && (
-                  <div className="bg-gray-800 text-gray-300 px-4 py-2 text-xs font-medium rounded-t-lg border-b border-gray-700">
+                  <div className="bg-gray-800 dark:bg-gray-900 text-gray-300 dark:text-gray-400 px-4 py-2 text-xs font-medium rounded-t-lg border-b border-gray-700 dark:border-gray-600">
                     {language}
                   </div>
                 )}
-                <pre className={`bg-gray-900 text-gray-100 p-4 overflow-x-auto text-sm font-mono leading-relaxed ${language ? 'rounded-b-lg' : 'rounded-lg'}`}>
+                <pre className={`bg-gray-900 dark:bg-gray-950 text-gray-100 dark:text-gray-200 p-4 overflow-x-auto text-sm font-mono leading-relaxed ${language ? 'rounded-b-lg' : 'rounded-lg'}`}>
                   <code className={className}>
                     {children}
                   </code>
@@ -114,7 +114,7 @@ export function MarkdownContent({ content, className = "" }: MarkdownContentProp
           
           // Blockquotes
           blockquote: ({ children }) => (
-            <blockquote className="border-l-4 border-blue-500 pl-6 py-2 mb-4 bg-blue-50 text-gray-700 italic">
+            <blockquote className="border-l-4 border-blue-500 dark:border-blue-400 pl-6 py-2 mb-4 bg-blue-50 dark:bg-blue-900/20 text-gray-700 dark:text-gray-300 italic">
               {children}
             </blockquote>
           ),
@@ -122,40 +122,40 @@ export function MarkdownContent({ content, className = "" }: MarkdownContentProp
           // Tables
           table: ({ children }) => (
             <div className="overflow-x-auto mb-4">
-              <table className="min-w-full border border-gray-300 rounded-lg overflow-hidden">
+              <table className="min-w-full border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden">
                 {children}
               </table>
             </div>
           ),
           thead: ({ children }) => (
-            <thead className="bg-gray-50">
+            <thead className="bg-gray-50 dark:bg-gray-800">
               {children}
             </thead>
           ),
           tbody: ({ children }) => (
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               {children}
             </tbody>
           ),
           tr: ({ children }) => (
-            <tr className="hover:bg-gray-50 transition-colors">
+            <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
               {children}
             </tr>
           ),
           th: ({ children }) => (
-            <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 border-b border-gray-300">
+            <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100 border-b border-gray-300 dark:border-gray-600">
               {children}
             </th>
           ),
           td: ({ children }) => (
-            <td className="px-4 py-3 text-sm text-gray-700">
+            <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
               {children}
             </td>
           ),
           
           // Horizontal rule
           hr: () => (
-            <hr className="border-0 border-t border-gray-300 my-8" />
+            <hr className="border-0 border-t border-gray-300 dark:border-gray-600 my-8" />
           ),
           
           // Images
@@ -163,19 +163,19 @@ export function MarkdownContent({ content, className = "" }: MarkdownContentProp
             <img
               src={src}
               alt={alt}
-              className="max-w-full h-auto rounded-lg shadow-sm border border-gray-200 my-4"
+              className="max-w-full h-auto rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 my-4"
               loading="lazy"
             />
           ),
           
           // Strong and emphasis
           strong: ({ children }) => (
-            <strong className="font-semibold text-gray-900">
+            <strong className="font-semibold text-gray-900 dark:text-gray-100">
               {children}
             </strong>
           ),
           em: ({ children }) => (
-            <em className="italic text-gray-700">
+            <em className="italic text-gray-700 dark:text-gray-300">
               {children}
             </em>
           ),

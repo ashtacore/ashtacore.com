@@ -35,15 +35,15 @@ export function PostCard({ post }: PostCardProps) {
   };
 
   return (
-    <article className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-200">
+    <article className="bg-white dark:bg-card-dark rounded-lg shadow-sm border border-gray-200 dark:border-card-border-dark overflow-hidden hover:shadow-md dark:hover:shadow-lg transition-all duration-200">
       <div className="p-8">
         <header className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-3 leading-tight hover:text-blue-600 transition-colors">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-3 leading-tight hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
             {post.title}
           </h2>
-          <div className="flex items-center text-sm text-gray-600 mb-4">
+          <div className="flex items-center text-sm text-gray-600 dark:text-gray-400 mb-4">
             <div className="flex items-center space-x-2">
-              <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
+              <div className="w-6 h-6 bg-blue-600 dark:bg-blue-500 rounded-full flex items-center justify-center">
                 <span className="text-white text-xs font-medium">
                   {post.author.name.charAt(0).toUpperCase()}
                 </span>
@@ -51,14 +51,14 @@ export function PostCard({ post }: PostCardProps) {
               <span className="font-medium">{post.author.name}</span>
             </div>
             <span className="mx-3">•</span>
-            <time className="text-gray-500">{formatDate(post._creationTime)}</time>
+            <time className="text-gray-500 dark:text-gray-400">{formatDate(post._creationTime)}</time>
           </div>
           {post.tags.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {post.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="px-3 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full border border-blue-200 hover:bg-blue-100 transition-colors"
+                  className="px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-medium rounded-full border border-blue-200 dark:border-blue-700 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
                 >
                   #{tag}
                 </span>
@@ -75,10 +75,10 @@ export function PostCard({ post }: PostCardProps) {
           )}
         </div>
 
-        <div className="mt-8 flex items-center justify-between pt-6 border-t border-gray-100">
+        <div className="mt-8 flex items-center justify-between pt-6 border-t border-gray-100 dark:border-gray-700">
           <button
             onClick={() => setShowFullContent(!showFullContent)}
-            className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors"
+            className="inline-flex items-center space-x-2 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium text-sm transition-colors"
           >
             <span>{showFullContent ? "Show Less" : "Read More"}</span>
             <svg 
@@ -93,7 +93,7 @@ export function PostCard({ post }: PostCardProps) {
           
           <button
             onClick={() => setShowComments(!showComments)}
-            className="inline-flex items-center space-x-2 text-gray-600 hover:text-gray-800 text-sm transition-colors"
+            className="inline-flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 text-sm transition-colors"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-3.582 8-8 8a9.863 9.863 0 01-4.906-1.289L3 21l1.289-5.094A9.863 9.863 0 013 12c0-4.418 3.582-8 8-8s8 3.582 8 8z" />
@@ -105,7 +105,7 @@ export function PostCard({ post }: PostCardProps) {
         </div>
 
         {showComments && (
-          <div className="mt-8 pt-8 border-t border-gray-200">
+          <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
             <CommentSection postId={post._id} />
           </div>
         )}

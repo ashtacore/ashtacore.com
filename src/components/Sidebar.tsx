@@ -16,9 +16,9 @@ export function Sidebar({ searchTerm, onSearchChange, selectedTag, onTagSelect }
   return (
     <div className="space-y-6">
       {/* Search Bar */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-          <svg className="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="bg-white dark:bg-card-dark rounded-lg shadow-sm border border-gray-200 dark:border-card-border-dark p-6">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
+          <svg className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
           Search Posts
@@ -31,15 +31,15 @@ export function Sidebar({ searchTerm, onSearchChange, selectedTag, onTagSelect }
             onChange={(e) => onSearchChange(e.target.value)}
             onFocus={() => setSearchFocused(true)}
             onBlur={() => setSearchFocused(false)}
-            className={`w-full px-4 py-3 pl-10 border rounded-lg outline-none transition-all duration-200 ${
+            className={`w-full px-4 py-3 pl-10 border rounded-lg outline-none transition-all duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 ${
               searchFocused 
-                ? 'border-blue-500 ring-2 ring-blue-100 shadow-sm' 
-                : 'border-gray-300 hover:border-gray-400'
+                ? 'border-blue-500 dark:border-blue-400 ring-2 ring-blue-100 dark:ring-blue-900/50 shadow-sm' 
+                : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
             }`}
           />
           <svg
             className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 transition-colors ${
-              searchFocused ? 'text-blue-500' : 'text-gray-400'
+              searchFocused ? 'text-blue-500 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'
             }`}
             fill="none"
             stroke="currentColor"
@@ -55,7 +55,7 @@ export function Sidebar({ searchTerm, onSearchChange, selectedTag, onTagSelect }
           {searchTerm && (
             <button
               onClick={() => onSearchChange("")}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -66,9 +66,9 @@ export function Sidebar({ searchTerm, onSearchChange, selectedTag, onTagSelect }
       </div>
 
       {/* Tags */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-          <svg className="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="bg-white dark:bg-card-dark rounded-lg shadow-sm border border-gray-200 dark:border-card-border-dark p-6">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
+          <svg className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
           </svg>
           Filter by Tags
@@ -78,8 +78,8 @@ export function Sidebar({ searchTerm, onSearchChange, selectedTag, onTagSelect }
             onClick={() => onTagSelect(null)}
             className={`block w-full text-left px-4 py-2 rounded-lg text-sm transition-all duration-200 ${
               selectedTag === null
-                ? "bg-blue-100 text-blue-800 font-medium border border-blue-200"
-                : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                ? "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 font-medium border border-blue-200 dark:border-blue-700"
+                : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-gray-200"
             }`}
           >
             <span className="flex items-center justify-between">
@@ -97,14 +97,14 @@ export function Sidebar({ searchTerm, onSearchChange, selectedTag, onTagSelect }
               onClick={() => onTagSelect(tag)}
               className={`block w-full text-left px-4 py-2 rounded-lg text-sm transition-all duration-200 ${
                 selectedTag === tag
-                  ? "bg-blue-100 text-blue-800 font-medium border border-blue-200"
-                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                  ? "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 font-medium border border-blue-200 dark:border-blue-700"
+                  : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-gray-200"
               }`}
             >
               <span className="flex items-center justify-between">
                 <span>#{tag}</span>
                 <span className="flex items-center space-x-2">
-                  <span className="text-xs bg-gray-200 text-gray-600 px-2 py-1 rounded-full">
+                  <span className="text-xs bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded-full">
                     {count}
                   </span>
                   {selectedTag === tag && (
@@ -120,19 +120,19 @@ export function Sidebar({ searchTerm, onSearchChange, selectedTag, onTagSelect }
       </div>
 
       {/* About Section */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-          <svg className="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="bg-white dark:bg-card-dark rounded-lg shadow-sm border border-gray-200 dark:border-card-border-dark p-6">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
+          <svg className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           About
         </h3>
-        <p className="text-gray-600 text-sm leading-relaxed">
+        <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
           Welcome my personal blog. I mostly write about technology. Both the things I use professionally 
           and the things I play around with in my free time. 
         </p>
-        <div className="mt-4 pt-4 border-t border-gray-100">
-          <div className="flex items-center space-x-2 text-xs text-gray-500">
+        <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
+          <div className="flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-400">
             <div className="w-2 h-2 bg-green-400 rounded-full"></div>
             <span>Real-time updates</span>
           </div>
