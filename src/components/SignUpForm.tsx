@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
+import { Turnstile } from "@marsidev/react-turnstile";
 
 interface SignUpFormProps {
   onSwitchToSignIn: () => void;
@@ -18,6 +19,9 @@ export function SignUpForm({ onSwitchToSignIn }: SignUpFormProps) {
   const [displayNameError, setDisplayNameError] = useState("");
   const [isCheckingDisplayName, setIsCheckingDisplayName] = useState(false);
   const [displayNameValid, setDisplayNameValid] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
+  const [captchaError, setCaptchaError] = useState("");
+  const [captchaValid, setCaptchaValid] = useState(false);
 
   // Real-time displayName validation
   const displayNameCheck = useQuery(
@@ -50,9 +54,28 @@ export function SignUpForm({ onSwitchToSignIn }: SignUpFormProps) {
     }
   }, [displayNameCheck, displayName]);
 
+  const handleCaptchaSuccess = (token: string) => {
+    setCaptchaToken(token);
+    setCaptchaValid(true);
+    setCaptchaError("");
+  };
+
+  const handleCaptchaError = () => {
+    setCaptchaToken("");
+    setCaptchaValid(false);
+    setCaptchaError("CAPTCHA verification failed. Please try again.");
+  };
+
+  const handleCaptchaExpire = () => {
+    setCaptchaToken("");
+    setCaptchaValid(false);
+    setCaptchaError("CAPTCHA expired. Please verify again.");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setCaptchaError("");
 
     if (!email || !password || !displayName) {
       setError("Please fill in all fields");
@@ -71,6 +94,11 @@ export function SignUpForm({ onSwitchToSignIn }: SignUpFormProps) {
 
     if (!displayNameValid) {
       setError("Please choose a valid display name");
+      return;
+    }
+
+    if (!captchaValid || !captchaToken) {
+      setError("Please complete the CAPTCHA verification");
       return;
     }
 
@@ -217,9 +245,48 @@ export function SignUpForm({ onSwitchToSignIn }: SignUpFormProps) {
         />
       </div>
 
+      {/* CAPTCHA Section */}
+      <div className="space-y-3">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          Security Verification
+        </label>
+        <div className="flex justify-center">
+          <div className="w-full max-w-sm">
+            <Turnstile
+              siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+              onSuccess={handleCaptchaSuccess}
+              onError={handleCaptchaError}
+              onExpire={handleCaptchaExpire}
+              options={{
+                theme: "auto",
+                size: "normal"
+              }}
+              className="turnstile-widget"
+            />
+          </div>
+        </div>
+        {captchaError && (
+          <div className="flex justify-center">
+            <p className="text-sm text-red-600 dark:text-red-400 text-center max-w-sm">
+              {captchaError}
+            </p>
+          </div>
+        )}
+        {captchaValid && (
+          <div className="flex justify-center">
+            <p className="text-sm text-green-600 dark:text-green-400 text-center max-w-sm flex items-center space-x-1">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+              <span>Verification complete!</span>
+            </p>
+          </div>
+        )}
+      </div>
+
       <button
         type="submit"
-        disabled={isSubmitting || !displayNameValid}
+        disabled={isSubmitting || !displayNameValid || !captchaValid}
         className="auth-button"
       >
         {isSubmitting ? (
