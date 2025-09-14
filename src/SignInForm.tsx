@@ -17,7 +17,6 @@ export function SignInForm() {
           const formData = new FormData(e.target as HTMLFormElement);
           formData.set("flow", "signIn");
           void signIn("password", formData)
-            .then(() => toast.success("Account created successfully!"))
             .catch((error) => {
             let toastTitle = "";
             if (error.message.includes("Invalid password")) {

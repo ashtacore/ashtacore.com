@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { toast } from "sonner";
+import { MarkdownContent } from "./MarkdownContent";
 
 export function CreatePostForm() {
   const [title, setTitle] = useState("");
@@ -185,61 +186,67 @@ export function CreatePostForm() {
   };
 
   return (
-    <div className="bg-white dark:bg-card-dark rounded-lg shadow-sm border border-gray-200 dark:border-card-border-dark p-8">
+    <div className="max-w-7xl mx-auto px-4 py-8">
       <div className="mb-8">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Create New Post</h2>
         <p className="text-gray-600 dark:text-gray-400">Share your knowledge with the community</p>
       </div>
       
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Title *
-          </label>
-          <input
-            type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter an engaging post title..."
-            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 outline-none transition-colors text-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-            required
-          />
-        </div>
+      {/* Responsive layout: side-by-side on lg+, stacked on smaller screens */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Form Card */}
+        <div className="bg-white dark:bg-card-dark rounded-lg shadow-sm border border-gray-200 dark:border-card-border-dark p-6">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">Edit Post</h3>
+          
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Title *
+              </label>
+              <input
+                type="text"
+                id="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Enter an engaging post title..."
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 outline-none transition-colors text-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                required
+              />
+            </div>
 
-        <div>
-          <label htmlFor="tags" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Tags
-          </label>
-          <input
-            type="text"
-            id="tags"
-            value={tags}
-            onChange={(e) => setTags(e.target.value)}
-            placeholder="react, javascript, tutorial, web-development..."
-            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 outline-none transition-colors bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-          />
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            Separate tags with commas. Use lowercase and hyphens for multi-word tags.
-          </p>
-        </div>
+            <div>
+              <label htmlFor="tags" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Tags
+              </label>
+              <input
+                type="text"
+                id="tags"
+                value={tags}
+                onChange={(e) => setTags(e.target.value)}
+                placeholder="react, javascript, tutorial, web-development..."
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 outline-none transition-colors bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+              />
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                Separate tags with commas. Use lowercase and hyphens for multi-word tags.
+              </p>
+            </div>
 
-        <div>
-          <label htmlFor="content" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Content *
-          </label>
-          <div className="relative">
-            <textarea
-              ref={textareaRef}
-              id="content"
-              rows={20}
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-              onPaste={handlePaste}
-              placeholder="Write your post content here...
+            <div>
+              <label htmlFor="content" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Content *
+              </label>
+              <div className="relative">
+                <textarea
+                  ref={textareaRef}
+                  id="content"
+                  rows={20}
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                  onPaste={handlePaste}
+                  placeholder="Write your post content here...
 
 You can use plain text or basic markdown formatting:
 
@@ -260,65 +267,118 @@ Code block
 [Link text](https://example.com)
 
 📝 TIP: You can drag & drop or paste images directly into this editor!"
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 outline-none resize-none font-mono text-sm leading-relaxed bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors ${
-                isDragOver 
-                  ? "border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20" 
-                  : "border-gray-300 dark:border-gray-600"
-              }`}
-              required
-            />
-            {isDragOver && (
-              <div className="absolute inset-0 border-2 border-dashed border-blue-500 dark:border-blue-400 bg-blue-50/80 dark:bg-blue-900/40 rounded-lg flex items-center justify-center pointer-events-none">
-                <div className="text-center">
-                  <div className="text-blue-600 dark:text-blue-400 text-lg font-semibold mb-2">
-                    📷 Drop images here
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 outline-none resize-none font-mono text-sm leading-relaxed bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors ${
+                    isDragOver 
+                      ? "border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20" 
+                      : "border-gray-300 dark:border-gray-600"
+                  }`}
+                  required
+                />
+                {isDragOver && (
+                  <div className="absolute inset-0 border-2 border-dashed border-blue-500 dark:border-blue-400 bg-blue-50/80 dark:bg-blue-900/40 rounded-lg flex items-center justify-center pointer-events-none">
+                    <div className="text-center">
+                      <div className="text-blue-600 dark:text-blue-400 text-lg font-semibold mb-2">
+                        📷 Drop images here
+                      </div>
+                      <div className="text-blue-500 dark:text-blue-300 text-sm">
+                        Images will be uploaded and inserted as markdown
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-blue-500 dark:text-blue-300 text-sm">
-                    Images will be uploaded and inserted as markdown
+                )}
+                {isUploading && (
+                  <div className="absolute top-4 right-4 bg-blue-600 text-white px-3 py-2 rounded-md shadow-lg flex items-center space-x-2">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span className="text-sm">Uploading image...</span>
                   </div>
-                </div>
+                )}
               </div>
-            )}
-            {isUploading && (
-              <div className="absolute top-4 right-4 bg-blue-600 text-white px-3 py-2 rounded-md shadow-lg flex items-center space-x-2">
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                <span className="text-sm">Uploading image...</span>
-              </div>
-            )}
-          </div>
-          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-            Write in plain text or use basic markdown formatting. You can drag & drop or paste images directly into the editor.
-          </p>
+              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                Write in plain text or use basic markdown formatting. You can drag & drop or paste images directly into the editor.
+              </p>
+            </div>
+
+            <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200 dark:border-gray-700">
+              <button
+                type="button"
+                onClick={() => {
+                  setTitle("");
+                  setContent("");
+                  setTags("");
+                }}
+                className="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium bg-white dark:bg-gray-800"
+              >
+                Clear Form
+              </button>
+              <button
+                type="submit"
+                disabled={isSubmitting || !title.trim() || !content.trim()}
+                className="px-8 py-3 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium shadow-sm hover:shadow-md"
+              >
+                {isSubmitting ? (
+                  <span className="flex items-center space-x-2">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span>Creating...</span>
+                  </span>
+                ) : (
+                  "Publish Post"
+                )}
+              </button>
+            </div>
+          </form>
         </div>
 
-        <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200 dark:border-gray-700">
-          <button
-            type="button"
-            onClick={() => {
-              setTitle("");
-              setContent("");
-              setTags("");
-            }}
-            className="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium bg-white dark:bg-gray-800"
-          >
-            Clear Form
-          </button>
-          <button
-            type="submit"
-            disabled={isSubmitting || !title.trim() || !content.trim()}
-            className="px-8 py-3 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium shadow-sm hover:shadow-md"
-          >
-            {isSubmitting ? (
-              <span className="flex items-center space-x-2">
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                <span>Creating...</span>
-              </span>
-            ) : (
-              "Publish Post"
+        {/* Preview Card */}
+        <div className="bg-white dark:bg-card-dark rounded-lg shadow-sm border border-gray-200 dark:border-card-border-dark p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Live Preview</h3>
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <span className="text-xs text-gray-500 dark:text-gray-400">Live</span>
+            </div>
+          </div>
+          
+          <div className="border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden">
+            {/* Preview Header */}
+            {title.trim() && (
+              <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50">
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                  {title}
+                </h1>
+                {tags.trim() && (
+                  <div className="flex flex-wrap gap-2">
+                    {tags.split(",").map((tag, index) => (
+                      <span
+                        key={index}
+                        className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-xs rounded-full font-medium"
+                      >
+                        {tag.trim()}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
             )}
-          </button>
+            
+            {/* Preview Content */}
+            <div className="h-[900px] overflow-y-auto">
+              {content.trim() ? (
+                <div className="p-6">
+                  <MarkdownContent content={content} />
+                </div>
+              ) : (
+                <div className="p-6 h-full flex items-center justify-center text-center">
+                  <div className="text-gray-400 dark:text-gray-500">
+                    <div className="text-4xl mb-4">📝</div>
+                    <p className="text-lg font-medium mb-2">Start writing to see preview</p>
+                    <p className="text-sm">Your markdown content will appear here as you type</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 }
