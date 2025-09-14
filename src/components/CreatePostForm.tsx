@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { toast } from "sonner";
@@ -8,8 +8,152 @@ export function CreatePostForm() {
   const [content, setContent] = useState("");
   const [tags, setTags] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [isDragOver, setIsDragOver] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   
   const createPost = useMutation(api.posts.createPost);
+  const generateUploadUrl = useMutation(api.posts.generateUploadUrl);
+  const getImageUrl = useMutation(api.posts.getImageUrl);
+
+  // Helper function to validate image files
+  const isValidImageFile = (file: File): boolean => {
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    
+    if (!validTypes.includes(file.type)) {
+      toast.error("Please upload a valid image file (JPEG, PNG, GIF, or WebP)");
+      return false;
+    }
+    
+    if (file.size > maxSize) {
+      toast.error("Image file must be less than 10MB");
+      return false;
+    }
+    
+    return true;
+  };
+
+  // Helper function to upload image and get markdown
+  const uploadImageAndGetMarkdown = async (file: File): Promise<string> => {
+    if (!isValidImageFile(file)) {
+      throw new Error("Invalid image file");
+    }
+
+    setIsUploading(true);
+    try {
+      // Generate upload URL
+      const uploadUrl = await generateUploadUrl();
+      
+      // Upload the file
+      const response = await fetch(uploadUrl, {
+        method: "POST",
+        headers: { "Content-Type": file.type },
+        body: file,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to upload image");
+      }
+
+      const { storageId } = await response.json();
+      
+      // Get the public URL
+      const imageUrl = await getImageUrl({ storageId });
+      
+      // Generate alt text from filename
+      const altText = file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
+      
+      return `![${altText}](${imageUrl})`;
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  // Helper function to insert text at cursor position
+  const insertTextAtCursor = (text: string) => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const startPos = textarea.selectionStart;
+    const endPos = textarea.selectionEnd;
+    const before = content.substring(0, startPos);
+    const after = content.substring(endPos);
+    
+    const newContent = before + text + after;
+    setContent(newContent);
+    
+    // Set cursor position after inserted text
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(startPos + text.length, startPos + text.length);
+    }, 0);
+  };
+
+  // Handle drag and drop
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // Only hide drag overlay if leaving the textarea entirely
+    if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+      setIsDragOver(false);
+    }
+  };
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(false);
+
+    const files = Array.from(e.dataTransfer.files);
+    const imageFiles = files.filter(file => file.type.startsWith('image/'));
+
+    if (imageFiles.length === 0) {
+      toast.error("Please drop image files only");
+      return;
+    }
+
+    for (const file of imageFiles) {
+      try {
+        const markdown = await uploadImageAndGetMarkdown(file);
+        insertTextAtCursor(`\n${markdown}\n`);
+        toast.success(`Image "${file.name}" uploaded successfully`);
+      } catch (error) {
+        toast.error(`Failed to upload image "${file.name}"`);
+        console.error("Upload error:", error);
+      }
+    }
+  };
+
+  // Handle paste
+  const handlePaste = async (e: React.ClipboardEvent) => {
+    const items = Array.from(e.clipboardData.items);
+    const imageItems = items.filter(item => item.type.startsWith('image/'));
+
+    if (imageItems.length === 0) return;
+
+    e.preventDefault();
+
+    for (const item of imageItems) {
+      const file = item.getAsFile();
+      if (file) {
+        try {
+          const markdown = await uploadImageAndGetMarkdown(file);
+          insertTextAtCursor(`\n${markdown}\n`);
+          toast.success("Image pasted and uploaded successfully");
+        } catch (error) {
+          toast.error("Failed to upload pasted image");
+          console.error("Paste upload error:", error);
+        }
+      }
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,12 +228,18 @@ export function CreatePostForm() {
           <label htmlFor="content" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Content *
           </label>
-          <textarea
-            id="content"
-            rows={20}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="Write your post content here...
+          <div className="relative">
+            <textarea
+              ref={textareaRef}
+              id="content"
+              rows={20}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              onPaste={handlePaste}
+              placeholder="Write your post content here...
 
 You can use plain text or basic markdown formatting:
 
@@ -107,12 +257,37 @@ You can use plain text or basic markdown formatting:
 Code block
 ```
 
-[Link text](https://example.com)"
-            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 outline-none resize-none font-mono text-sm leading-relaxed bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-            required
-          />
+[Link text](https://example.com)
+
+📝 TIP: You can drag & drop or paste images directly into this editor!"
+              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 outline-none resize-none font-mono text-sm leading-relaxed bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors ${
+                isDragOver 
+                  ? "border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20" 
+                  : "border-gray-300 dark:border-gray-600"
+              }`}
+              required
+            />
+            {isDragOver && (
+              <div className="absolute inset-0 border-2 border-dashed border-blue-500 dark:border-blue-400 bg-blue-50/80 dark:bg-blue-900/40 rounded-lg flex items-center justify-center pointer-events-none">
+                <div className="text-center">
+                  <div className="text-blue-600 dark:text-blue-400 text-lg font-semibold mb-2">
+                    📷 Drop images here
+                  </div>
+                  <div className="text-blue-500 dark:text-blue-300 text-sm">
+                    Images will be uploaded and inserted as markdown
+                  </div>
+                </div>
+              </div>
+            )}
+            {isUploading && (
+              <div className="absolute top-4 right-4 bg-blue-600 text-white px-3 py-2 rounded-md shadow-lg flex items-center space-x-2">
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span className="text-sm">Uploading image...</span>
+              </div>
+            )}
+          </div>
           <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-            Write in plain text or use basic markdown formatting. The content will be displayed as formatted text.
+            Write in plain text or use basic markdown formatting. You can drag & drop or paste images directly into the editor.
           </p>
         </div>
 
