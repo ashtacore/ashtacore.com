@@ -5,7 +5,6 @@ import { toast } from "sonner";
 
 export function SignInForm() {
   const { signIn } = useAuthActions();
-  const [flow, setFlow] = useState<"signIn" | "signUp">("signIn");
   const [submitting, setSubmitting] = useState(false);
 
   return (
@@ -16,22 +15,15 @@ export function SignInForm() {
           e.preventDefault();
           setSubmitting(true);
           const formData = new FormData(e.target as HTMLFormElement);
-          formData.set("flow", flow);
+          formData.set("flow", "signIn");
           void signIn("password", formData)
-            .then(() => {
-              if (flow === "signUp") {
-                toast.success("Account created successfully!");
-              }
-            })
+            .then(() => toast.success("Account created successfully!"))
             .catch((error) => {
             let toastTitle = "";
             if (error.message.includes("Invalid password")) {
               toastTitle = "Invalid password. Please try again.";
             } else {
-              toastTitle =
-                flow === "signIn"
-                  ? "Could not sign in, did you mean to sign up?"
-                  : "Could not sign up, did you mean to sign in?";
+              toastTitle = "Could not sign in, did you mean to sign up?";
             }
             toast.error(toastTitle);
           })
@@ -55,22 +47,8 @@ export function SignInForm() {
           required
         />
         <button className="auth-button mb-2" type="submit" disabled={submitting}>
-          {flow === "signIn" ? "Sign in" : "Sign up"}
+          Sign in
         </button>
-        <div className="text-center text-sm text-secondary mt-1 mb-1">
-          <span>
-            {flow === "signIn"
-              ? "Don't have an account? "
-              : "Already have an account? "}
-          </span>
-          <button
-            type="button"
-            className="text-primary hover:text-primary-hover hover:underline font-medium cursor-pointer"
-            onClick={() => setFlow(flow === "signIn" ? "signUp" : "signIn")}
-          >
-            {flow === "signIn" ? "Sign up instead" : "Sign in instead"}
-          </button>
-        </div>
       </form>
     </div>
   );

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { SignInForm } from "../SignInForm";
+import { SignUpForm } from "./SignUpForm";
 
 interface SignInModalProps {
   isOpen: boolean;
@@ -10,12 +11,14 @@ interface SignInModalProps {
 
 export function SignInModal({ isOpen, onClose }: SignInModalProps) {
   const [isClosing, setIsClosing] = useState(false);
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const user = useQuery(api.users.getCurrentUser);
 
   const handleClose = () => {
     setIsClosing(true);
     setTimeout(() => {
       setIsClosing(false);
+      setMode("signin"); // Reset to sign-in mode when closing
       onClose();
     }, 200);
   };
@@ -42,7 +45,7 @@ export function SignInModal({ isOpen, onClose }: SignInModalProps) {
           ? "bg-black bg-opacity-50 dark:bg-black dark:bg-opacity-70 backdrop-blur-sm"
           : "bg-black bg-opacity-0"
       }`}
-      onClick={handleBackdropClick}
+      onMouseDown={handleBackdropClick}
     >
       <div
         className={`bg-white dark:bg-card-dark rounded-xl shadow-2xl w-full max-w-md transform transition-all duration-200 ${
@@ -54,8 +57,12 @@ export function SignInModal({ isOpen, onClose }: SignInModalProps) {
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-100 dark:border-gray-700">
           <div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Welcome Back</h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Sign in to your account</p>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+              {mode === "signin" ? "Welcome Back" : "Create Account"}
+            </h2>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+              {mode === "signin" ? "Sign in to your account" : "Join the community"}
+            </p>
           </div>
           <button
             onClick={handleClose}
@@ -80,7 +87,21 @@ export function SignInModal({ isOpen, onClose }: SignInModalProps) {
 
         {/* Content */}
         <div className="p-6">
-          <SignInForm />
+          {mode === "signin" ? (
+            <div>
+              <SignInForm />
+              <div className="mt-4 text-center">
+                <button
+                  onClick={() => setMode("signup")}
+                  className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
+                >
+                  Don't have an account? Sign up
+                </button>
+              </div>
+            </div>
+          ) : (
+            <SignUpForm onSwitchToSignIn={() => setMode("signin")} />
+          )}
         </div>
       </div>
     </div>
