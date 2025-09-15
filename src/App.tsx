@@ -13,14 +13,6 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState<"blog" | "about" | "create">("blog");
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
   const user = useQuery(api.users.getCurrentUser);
-  const ensureUserProfile = useMutation(api.users.ensureUserProfile);
-
-  // Ensure user profile exists when user is authenticated but has no profile
-  useEffect(() => {
-    if (user && !user.profile) {
-      ensureUserProfile().catch(console.error);
-    }
-  }, [user, ensureUserProfile]);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
@@ -55,7 +47,7 @@ export default function App() {
                 >
                   Meet Jay
                 </button>
-                {user?.profile?.role === "admin" && (
+                {user?.role === "admin" && (
                   <button
                     onClick={() => setCurrentPage("create")}
                     className={`px-3 py-2 text-sm font-medium transition-colors ${
@@ -76,7 +68,7 @@ export default function App() {
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-blue-600 dark:bg-blue-500 rounded-full flex items-center justify-center">
                     <span className="text-white text-sm font-medium">
-                      {(user?.profile?.displayName || user?.name || "U").charAt(0).toUpperCase()}
+                      {(user?.name || "A").charAt(0).toUpperCase()}
                     </span>
                   </div>
                   <SignOutButton />
@@ -111,7 +103,7 @@ export default function App() {
       <main className="min-h-screen">
         {currentPage === "blog" && <BlogLayout />}
         {currentPage === "about" && <AboutPage />}
-        {currentPage === "create" && user?.profile?.role === "admin" && <CreatePostPage />}
+        {currentPage === "create" && user?.role === "admin" && <CreatePostPage />}
       </main>
       
       <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-16 transition-colors duration-200">

@@ -129,7 +129,9 @@ export function Sidebar({ searchTerm, onSearchChange, selectedTag, onTagSelect }
         </h3>
         <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
           Welcome my personal blog. I mostly write about technology. Both the things I use professionally 
-          and the things I play around with in my free time. 
+          and the things I play around with in my free time.
+          <br/><br/>
+          A large portion of this blog was vibe coded, but none of my posts are.
         </p>
         <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
           <div className="flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-400">

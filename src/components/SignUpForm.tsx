@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuthActions } from "@convex-dev/auth/react";
-import { useQuery, useMutation, useConvexAuth } from "convex/react";
+import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Turnstile } from "@marsidev/react-turnstile";
 
@@ -10,7 +10,6 @@ interface SignUpFormProps {
 
 export function SignUpForm({ onSwitchToSignIn }: SignUpFormProps) {
   const { signIn } = useAuthActions();
-  const { isAuthenticated } = useConvexAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -24,14 +23,12 @@ export function SignUpForm({ onSwitchToSignIn }: SignUpFormProps) {
   const [captchaError, setCaptchaError] = useState("");
   const [captchaValid, setCaptchaValid] = useState(false);
 
-  // Real-time displayName validation
+  // Real-time validator  
   const displayNameCheck = useQuery(
     api.users.checkDisplayNameAvailability,
     displayName.length >= 2 ? { displayName } : "skip"
   );
-
-  const updateUserProfile = useMutation(api.users.updateUserProfile);
-
+  
   useEffect(() => {
     if (displayName.length < 2) {
       setDisplayNameError("");

@@ -28,15 +28,6 @@ const applicationTables = {
     .index("by_post", ["postId"])
     .index("by_author", ["authorId"])
     .index("by_parent", ["parentId"]),
-
-  userProfiles: defineTable({
-    userId: v.id("users"),
-    role: v.union(v.literal("admin"), v.literal("user")),
-    displayName: v.string(),
-    bio: v.optional(v.string()),
-  })
-    .index("by_user", ["userId"])
-    .index("by_role", ["role"]),
 };
 
 export default defineSchema({

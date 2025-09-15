@@ -68,7 +68,7 @@ export function CommentSection({ postId }: CommentSectionProps) {
           <div className="flex items-start space-x-3">
             <div className="w-8 h-8 bg-blue-600 dark:bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
               <span className="text-white text-sm font-medium">
-                {(user.profile?.displayName || user.name || "U").charAt(0).toUpperCase()}
+                {(user.name).charAt(0).toUpperCase()}
               </span>
             </div>
             <div className="flex-1">
