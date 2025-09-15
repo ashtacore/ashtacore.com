@@ -22,15 +22,11 @@ export const listPosts = query({
       const postsWithAuthors = await Promise.all(
         result.page.map(async (post) => {
           const author = await ctx.db.get(post.authorId);
-          const profile = await ctx.db
-            .query("userProfiles")
-            .withIndex("by_user", (q) => q.eq("userId", post.authorId))
-            .first();
           
           return {
             ...post,
             author: {
-              name: profile?.displayName || author?.name || "Anonymous",
+              name: author?.name || "Anonymous",
               email: author?.email,
             },
           };
@@ -58,15 +54,11 @@ export const listPosts = query({
     const postsWithAuthors = await Promise.all(
       result.page.map(async (post) => {
         const author = await ctx.db.get(post.authorId);
-        const profile = await ctx.db
-          .query("userProfiles")
-          .withIndex("by_user", (q) => q.eq("userId", post.authorId))
-          .first();
         
         return {
           ...post,
           author: {
-            name: profile?.displayName || author?.name || "Anonymous",
+            name: author?.name || "Anonymous",
             email: author?.email,
           },
         };
@@ -92,15 +84,11 @@ export const getPost = query({
     if (!post) return null;
 
     const author = await ctx.db.get(post.authorId);
-    const profile = await ctx.db
-      .query("userProfiles")
-      .withIndex("by_user", (q) => q.eq("userId", post.authorId))
-      .first();
 
     return {
       ...post,
       author: {
-        name: profile?.displayName || author?.name || "Anonymous",
+        name: author?.name || "Anonymous",
         email: author?.email,
       },
     };
@@ -139,12 +127,9 @@ export const createPost = mutation({
     const userId = await getAuthUserId(ctx);
     if (!userId) throw new Error("Not authenticated");
 
-    const profile = await ctx.db
-      .query("userProfiles")
-      .withIndex("by_user", (q) => q.eq("userId", userId))
-      .first();
+    const user = await ctx.db.get(userId);
 
-    if (profile?.role !== "admin") {
+    if (user?.role !== "admin") {
       throw new Error("Only admins can create posts");
     }
 
@@ -176,12 +161,9 @@ export const generateUploadUrl = mutation({
     const userId = await getAuthUserId(ctx);
     if (!userId) throw new Error("Not authenticated");
 
-    const profile = await ctx.db
-      .query("userProfiles")
-      .withIndex("by_user", (q) => q.eq("userId", userId))
-      .first();
+    const user = await ctx.db.get(userId);
 
-    if (profile?.role !== "admin") {
+    if (user?.role !== "admin") {
       throw new Error("Only admins can upload images");
     }
 
