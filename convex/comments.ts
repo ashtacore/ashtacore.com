@@ -14,15 +14,11 @@ export const getComments = query({
     const commentsWithAuthors = await Promise.all(
       comments.map(async (comment) => {
         const author = await ctx.db.get(comment.authorId);
-        const profile = await ctx.db
-          .query("userProfiles")
-          .withIndex("by_user", (q) => q.eq("userId", comment.authorId))
-          .first();
-
+        
         return {
           ...comment,
           author: {
-            name: profile?.displayName || author?.name || "Anonymous",
+            name: author?.name || "Anonymous",
             email: author?.email,
           },
         };
