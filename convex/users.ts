@@ -1,6 +1,7 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
+import isEmail from 'validator/lib/isEmail';
 
 export const getCurrentUser = query({
   args: {},
@@ -49,7 +50,7 @@ export const ensureUserProfile = mutation({
     if (!existingProfile) {
       await ctx.db.insert("userProfiles", {
         userId,
-        displayName: user.name || "User",
+        displayName: user.name || "Anon",
         role: "user",
       });
     }
@@ -86,6 +87,31 @@ export const checkDisplayNameAvailability = query({
   },
 });
 
+export const checkAlreadyRegistered = query({
+  args: { provider: v.string(), id: v.string() },
+  handler: async (ctx, args) => {
+    const { provider, id } = args;
+    
+    // Check length and character restrictions
+    if (!isEmail(id)) {
+      return { available: false, reason: "ID should be a valid email address" };
+    }
+    
+    // Check if displayName is already taken (case-insensitive)
+    const existingProfile = await ctx.db
+      .query("authAccounts")
+      .filter((q) => q.eq(q.field("provider"), provider))
+      .filter((q) => q.eq(q.field("providerAccountId"), id))
+      .first();
+    
+    if (existingProfile) {
+      return { available: false, reason: "This ID is already registered" };
+    }
+    
+    return { available: true };
+  },
+});
+
 export const updateUserProfile = mutation({
   args: { 
     displayName: v.string(),
@@ -101,6 +127,16 @@ export const updateUserProfile = mutation({
       throw new Error("User not found");
     }
 
+    // Validate displayName format
+    if (args.displayName.length < 2 || args.displayName.length > 30) {
+      throw new Error("Display name must be between 2 and 30 characters");
+    }
+    
+    const validPattern = /^[a-zA-Z0-9\s\-_]+$/;
+    if (!validPattern.test(args.displayName)) {
+      throw new Error("Display name can only contain letters, numbers, spaces, hyphens, and underscores");
+    }
+
     // Check if displayName is already taken by another user
     const existingProfile = await ctx.db
       .query("userProfiles")
@@ -114,16 +150,6 @@ export const updateUserProfile = mutation({
     
     if (existingProfile) {
       throw new Error("This display name is already taken");
-    }
-
-    // Validate displayName format
-    if (args.displayName.length < 2 || args.displayName.length > 30) {
-      throw new Error("Display name must be between 2 and 30 characters");
-    }
-    
-    const validPattern = /^[a-zA-Z0-9\s\-_]+$/;
-    if (!validPattern.test(args.displayName)) {
-      throw new Error("Display name can only contain letters, numbers, spaces, hyphens, and underscores");
     }
     
     // Get or create user profile

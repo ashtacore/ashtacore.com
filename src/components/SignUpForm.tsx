@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuthActions } from "@convex-dev/auth/react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery, useMutation, useConvexAuth } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Turnstile } from "@marsidev/react-turnstile";
 
@@ -10,6 +10,7 @@ interface SignUpFormProps {
 
 export function SignUpForm({ onSwitchToSignIn }: SignUpFormProps) {
   const { signIn } = useAuthActions();
+  const { isAuthenticated } = useConvexAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -106,10 +107,18 @@ export function SignUpForm({ onSwitchToSignIn }: SignUpFormProps) {
 
     try {
       // First, create the account
-      await signIn("password", { email, password, flow: "signUp" });
-      
-      // Then update the profile with the displayName
-      await updateUserProfile({ displayName });
+      await signIn("credentials", 
+        { email: email, name: displayName, role: "user", password: password, flow: "signUp" })
+        .catch((error) => {
+          let errorMessage = "Failed to create account. Please try again.";
+          if (error.message.includes("AlreadyRegistered")) {
+            errorMessage = "Email address has already been registered, did you mean to sign in?";
+          }
+          setError(errorMessage);
+        })
+        .finally(() => {
+          setIsSubmitting(false);
+        });
     } catch (err: any) {
       console.error("Sign up failed:", err);
       setError(err.message || "Failed to create account. Please try again.");

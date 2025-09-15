@@ -41,5 +41,13 @@ const applicationTables = {
 
 export default defineSchema({
   ...authTables,
+  users: defineTable({
+    email: v.string(),
+    name: v.string(),
+    image: v.optional(v.string()),
+    role: v.union(v.literal("admin"), v.literal("user")),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  }).index("email", ["email"]),
   ...applicationTables,
 });
