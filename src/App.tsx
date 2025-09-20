@@ -1,4 +1,5 @@
 import { Authenticated, Unauthenticated, useQuery, useMutation } from "convex/react";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { api } from "../convex/_generated/api";
 import { SignOutButton } from "./SignOutButton";
 import { Toaster } from "sonner";
@@ -6,13 +7,25 @@ import { BlogLayout } from "./components/BlogLayout";
 import { CreatePostForm } from "./components/CreatePostForm";
 import { SignInModal } from "./components/SignInModal";
 import { AboutPage } from "./components/AboutPage";
+import { PostView } from "./components/PostView";
 import { DarkModeToggle } from "./components/DarkModeToggle";
 import { useState, useEffect } from "react";
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<"blog" | "about" | "create">("blog");
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
   const user = useQuery(api.users.getCurrentUser);
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Determine current page based on URL
+  const getCurrentPage = () => {
+    if (location.pathname === "/about") return "about";
+    if (location.pathname === "/create") return "create";
+    if (location.pathname.startsWith("/post/")) return "post";
+    return "blog";
+  };
+  
+  const currentPage = getCurrentPage();
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
@@ -21,14 +34,14 @@ export default function App() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-8">
               <button 
-                onClick={() => setCurrentPage("blog")}
+                onClick={() => navigate("/")}
                 className="text-2xl font-bold text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               >
                 Ashtacore
               </button>
               <div className="hidden md:flex space-x-6">
                 <button
-                  onClick={() => setCurrentPage("blog")}
+                  onClick={() => navigate("/")}
                   className={`px-3 py-2 text-sm font-medium transition-colors ${
                     currentPage === "blog"
                       ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400"
@@ -38,7 +51,7 @@ export default function App() {
                   Blog
                 </button>
                 <button
-                  onClick={() => setCurrentPage("about")}
+                  onClick={() => navigate("/about")}
                   className={`px-3 py-2 text-sm font-medium transition-colors ${
                     currentPage === "about"
                       ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400"
@@ -49,7 +62,7 @@ export default function App() {
                 </button>
                 {user?.role === "admin" && (
                   <button
-                    onClick={() => setCurrentPage("create")}
+                    onClick={() => navigate("/create")}
                     className={`px-3 py-2 text-sm font-medium transition-colors ${
                       currentPage === "create"
                         ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400"
@@ -101,9 +114,15 @@ export default function App() {
       </nav>
 
       <main className="min-h-screen">
-        {currentPage === "blog" && <BlogLayout />}
-        {currentPage === "about" && <AboutPage />}
-        {currentPage === "create" && user?.role === "admin" && <CreatePostPage />}
+        <Routes>
+          <Route path="/" element={<BlogLayout />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/post/:slug" element={<PostView />} />
+          {user?.role === "admin" && (
+            <Route path="/create" element={<CreatePostPage />} />
+          )}
+          <Route path="*" element={<BlogLayout />} />
+        </Routes>
       </main>
       
       <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-16 transition-colors duration-200">
