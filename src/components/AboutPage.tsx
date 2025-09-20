@@ -275,22 +275,45 @@ export function AboutPage() {
 	      <section id="skills" className="py-16 px-4 scroll-mt-20" tabIndex={-1} aria-labelledby="skills-heading">
 	        <div className="max-w-6xl mx-auto">
 	          <h2 id="skills-heading" className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-12 text-center">Skills</h2>
-	          <div className="grid md:grid-cols-2 gap-8">
+	          <div className="grid md:grid-cols-3 gap-8">
 	            <div>
 	              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-300 mb-4">Languages</h3>
 	              <div className="flex flex-wrap gap-2">
-	                {['C#', 'Go', 'JavaScript', 'Python', 'PowerShell', 'Java', 'R'].map((skill) => (
+	                {['C#', 'Go', 'Java', 'JavaScript', 'PowerShell', 'Python', 'R'].map((skill) => (
 	                  <span key={skill} className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-3 py-1 rounded-full text-sm font-medium">
 	                    {skill}
 	                  </span>
 	                ))}
 	              </div>
 	            </div>
-	            <div>
-	              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-300 mb-4">Frameworks & Tools</h3>
+	            
+	            <div className="col-span-2">
+	              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-300 mb-4">Frameworks</h3>
 	              <div className="flex flex-wrap gap-2">
-	                {['.NET Framework/Core', 'Blazor', 'WPF', 'Charm', 'Vue.js', 'Flask', 'SQL Server', 'PostgreSQL', 'AWS', 'Azure', 'Azure DevOps', 'Revit', 'Navisworks', 'Niagara Controls', 'Ignition'].map((skill) => (
+	                {['.NET Framework/Core', 'Blazor', 'Charm', 'Flask', 'React', 'Tailwind', 'Telerik', 'Vue.js', 'WPF'].map((skill) => (
 	                  <span key={skill} className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-3 py-1 rounded-full text-sm font-medium">
+	                    {skill}
+	                  </span>
+	                ))}
+	              </div>
+	            </div>
+				
+				<div>
+	              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-300 mb-4">Methodologies</h3>
+	              <div className="flex flex-wrap gap-2">
+	                {['Agile', 'BIM', 'Scrum'].map((skill) => (
+	                  <span key={skill} className="bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 px-3 py-1 rounded-full text-sm font-medium">
+	                    {skill}
+	                  </span>
+	                ))}
+	              </div>
+	            </div>
+
+				<div className="col-span-2">
+	              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-300 mb-4">Tools</h3>
+	              <div className="flex flex-wrap gap-2">
+	                {['AWS', 'Azure', 'Azure DevOps', 'Ignition', 'Navisworks', 'Niagara Controls', 'PostgreSQL', 'Revit', 'SQL Server'].map((skill) => (
+	                  <span key={skill} className="bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 px-3 py-1 rounded-full text-sm font-medium">
 	                    {skill}
 	                  </span>
 	                ))}
