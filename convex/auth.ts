@@ -11,8 +11,6 @@ export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
   providers: [
     ConvexCredentials({
       authorize: async (credentials, ctx) => {
-        console.log(credentials);
-
         const email = String(credentials.email ?? "").toLowerCase();
         const password = String(credentials.password ?? "");
         if (!email || !password || !isEmail(email)) throw new Error("Invalid email or password given");;
