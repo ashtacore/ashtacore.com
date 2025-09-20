@@ -18,6 +18,7 @@ A full-featured blog application built with React, TypeScript, and Convex. Featu
 - **Tag-based organization** with automatic tag aggregation
 
 ### 🔍 Discovery & Navigation
+- **React Router** for navigating directly to posts
 - **Full-text search** across all post content
 - **Tag filtering** with post counts
 - **Real-time updates** using Convex's reactive queries
@@ -121,29 +122,30 @@ The application will be available at `http://localhost:5173`
 
 ```
 src/
-├── components/           # React components
-│   ├── AboutPage.tsx     # About page content
-│   ├── BlogLayout.tsx    # Main layout wrapper
-│   ├── CommentSection.tsx# Real-time comments
-│   ├── CreatePostForm.tsx# Post creation with live preview
-│   ├── DarkModeToggle.tsx# Theme switcher
-│   ├── MarkdownContent.tsx# Markdown renderer
-│   ├── PostCard.tsx      # Post preview cards
-│   ├── Sidebar.tsx       # Search and filtering
-│   ├── SignInModal.tsx   # Authentication modal
-│   └── SignUpForm.tsx    # Registration with Turnstile
+├── components/             # React components
+│   ├── AboutPage.tsx       # About page content
+│   ├── BlogLayout.tsx      # Main layout wrapper
+│   ├── CommentSection.tsx  # Real-time comments
+│   ├── CreatePostForm.tsx  # Post creation with live preview
+│   ├── DarkModeToggle.tsx  # Theme switcher
+│   ├── MarkdownContent.tsx # Markdown renderer
+│   ├── PostCard.tsx        # Post preview cards
+│   ├── PostView.tsx        # Post view page
+│   ├── Sidebar.tsx         # Search and filtering
+│   ├── SignInModal.tsx     # Authentication modal
+│   └── SignUpForm.tsx      # Registration with Turnstile
 ├── hooks/
-│   └── useDarkMode.ts    # Dark mode state management
+│   └── useDarkMode.ts      # Dark mode state management
 └── lib/
-    └── utils.ts          # Utility functions
+    └── utils.ts            # Utility functions
 
 convex/
-├── auth.config.ts        # Authentication configuration
-├── auth.ts               # Auth helper functions
-├── comments.ts           # Comment queries and mutations
-├── posts.ts              # Post management with search
-├── schema.ts             # Database schema definition
-└── users.ts              # User management
+├── auth.config.ts          # Authentication configuration
+├── auth.ts                 # Auth helper functions
+├── comments.ts             # Comment queries and mutations
+├── posts.ts                # Post management with search
+├── schema.ts               # Database schema definition
+└── users.ts                # User management
 ```
 
 ## 🔧 Configuration
